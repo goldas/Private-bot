@@ -1,6 +1,7 @@
 const { Client } = require('discord.js');
 const ytdl = require('ytdl-core');
 const ytpl = require('ytpl');
+const CryptoJS = require('crypto-js') 
 const { token } = require('./token.json');
 const { prefix } = require('./config.json');
 const client = new Client();
@@ -290,6 +291,8 @@ client.on('message', async (msg) => {
 // 連上線時的事件
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
+    
+    
 });
-
-client.login(token);
+let decryptToken = CryptoJS.AES.decrypt(token,'secretsword2').toString(CryptoJS.enc.Utf8)
+client.login(decryptToken);
