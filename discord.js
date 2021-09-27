@@ -295,11 +295,10 @@ client.on('ready', () => {
     
     client.user.setPresence(
         {
-            status: 'available',
+            status: 'online',
             activity:{
                 name: '史丹利大好き！！',
-                type: 'PLAYING',
-                url: ''
+                type: 'PLAYING'
             }
         }
     )
