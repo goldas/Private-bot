@@ -298,7 +298,8 @@ client.on('ready', () => {
             status: 'online',
             activity:{
                 name: '史丹利大好き！！',
-                type: 'PLAYING'
+                type: 'PLAYING',
+                url:'https://www.youtube.com/watch?v=mLDazwuh3JQ'
             }
         }
     )
