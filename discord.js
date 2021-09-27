@@ -288,10 +288,21 @@ client.on('message', async (msg) => {
     }
 });
 
+
 // 連上線時的事件
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     
+    client.user.setPresence(
+        {
+            status: 'available',
+            activity:{
+                name: '史丹利大好き！！',
+                type: 'PLAYING',
+                url: ''
+            }
+        }
+    )
     
 });
 let decryptToken = CryptoJS.AES.decrypt(token,'secretsword2').toString(CryptoJS.enc.Utf8)
