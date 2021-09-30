@@ -189,11 +189,9 @@ class Music {
         
         if (this.queue[msg.guild.id] && this.queue[msg.guild.id].length > 0) {
             
-            let list = this.queue[msg.guild.id]
-            for (let i = list.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [list[i], list[j]] = [list[j], list[i]];
-            }
+            
+            this.queue[msg.guild.id].sort(()=>Math.random()-0.5);
+            
             msg.channel.send('已經對隊列中的歌曲使用洗牌同盟拳');
         } else {
             msg.channel.send('目前隊列中沒有歌曲');
