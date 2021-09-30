@@ -1,7 +1,7 @@
 const { Client } = require('discord.js');
 const ytdl = require('ytdl-core');
 const ytpl = require('ytpl');
-const CryptoJS = require('crypto-js') 
+const CryptoJS = require('crypto-js')
 const { token } = require('./token.json');
 const { prefix } = require('./config.json');
 const client = new Client();
@@ -88,7 +88,7 @@ class Music {
 
             if (musicURL.includes('playlist')) {
                 const res = await ytpl(musicURL);
-                for(let i = 0;i<res.items.length;i++){
+                for (let i = 0; i < res.items.length; i++) {
                     this.queue[guildID].push({
                         name: res.items[i].title,
                         url: res.items[i].shortUrl
@@ -112,7 +112,7 @@ class Music {
 
 
             // 如果目前正在播放歌曲就加入隊列，反之則播放歌曲
-            if (!this.isPlaying[guildID]) {                            
+            if (!this.isPlaying[guildID]) {
                 this.isPlaying[guildID] = true;
                 this.playMusic(msg, guildID, this.queue[guildID][0]);
             }
@@ -185,12 +185,27 @@ class Music {
 
     }
 
+    shuffle(msg) {
+        
+        if (this.queue[msg.guild.id] && this.queue[msg.guild.id].length > 0) {
+            
+            let list = this.queue[msg.guild.id]
+            for (let i = list.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [list[i], list[j]] = [list[j], list[i]];
+            }
+            msg.channel.send('已經對隊列中的歌曲使用洗牌同盟拳');
+        } else {
+            msg.channel.send('目前隊列中沒有歌曲');
+        }
+    }
+
     nowQueue(msg) {
 
         // 如果隊列中有歌曲就顯示
         if (this.queue[msg.guild.id] && this.queue[msg.guild.id].length > 0) {
             // 字串處理，將 Object 組成字串
-            const queueString = '```'+this.queue[msg.guild.id].map((item, index) => `[${index + 1}] ${item.name}`).join('\n')+'```';
+            const queueString = '```' + this.queue[msg.guild.id].map((item, index) => `[${index + 1}] ${item.name}`).join('\n') + '```';
             msg.channel.send(queueString);
         } else {
             msg.channel.send('目前隊列中沒有歌曲');
@@ -273,6 +288,14 @@ client.on('message', async (msg) => {
         music.skip(msg);
     }
 
+        // !!queue
+        if (msg.content === `${prefix}shuffle`) {
+
+            // 查看隊列
+            music.shuffle(msg);
+        }
+    
+
     // !!queue
     if (msg.content === `${prefix}queue`) {
 
@@ -292,18 +315,30 @@ client.on('message', async (msg) => {
 // 連上線時的事件
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    
+
     client.user.setPresence(
         {
             status: 'online',
-            activity:{
+            activity: {
                 name: '史丹利大好き！！',
                 type: 'PLAYING',
-                url:'https://www.youtube.com/watch?v=mLDazwuh3JQ'
+                url: 'https://www.youtube.com/watch?v=mLDazwuh3JQ'
             }
         }
     )
-    
+
 });
-let decryptToken = CryptoJS.AES.decrypt(token,'secretsword2').toString(CryptoJS.enc.Utf8)
+
+client.on('messageReactionAdd', (reaction, user) => {
+    const member = reaction.message.guild.members.cache.get(user.id);
+    switch (reaction.emoji.name) {
+        case '':
+            member.roles.add('')
+            break;
+        case '':
+            member.roles.add('')
+            break;
+    }
+})
+let decryptToken = CryptoJS.AES.decrypt(token, 'secretsword2').toString(CryptoJS.enc.Utf8)
 client.login(decryptToken);
